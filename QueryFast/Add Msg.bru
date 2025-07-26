@@ -5,11 +5,13 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/messages/:msg_name/
-  body: none
+  url: {{baseUrl}}/messages
+  body: json
   auth: none
 }
 
-params:path {
-  msg_name: Cheese Is Here
+body:json {
+  {
+    "msg_name": "Cheese is great."
+  }
 }
