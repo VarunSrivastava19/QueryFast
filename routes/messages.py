@@ -1,14 +1,14 @@
 from fastapi import APIRouter
-from models import MsgPayload
+from models import MsgBody, MsgPayload
 
 router = APIRouter()
 
 messages_list: dict[int, MsgPayload] = {}
 
-@router.post("/messages/{msg_name}/")
-def add_msg(msg_name: str) -> dict[str, MsgPayload]:
+@router.post("/messages")
+def add_msg(msg: MsgBody) -> dict[str, MsgPayload]:
     msg_id = max(messages_list.keys()) + 1 if messages_list else 0
-    messages_list[msg_id] = MsgPayload(msg_id=msg_id, msg_name=msg_name)
+    messages_list[msg_id] = MsgPayload(msg_id=msg_id, msg_name=msg.msg_name)
     return {"message": messages_list[msg_id]}
 
 @router.get("/messages")
