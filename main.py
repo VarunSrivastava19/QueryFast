@@ -4,8 +4,9 @@ from routes.about import router as about_router
 from routes.messages import router as messages_router
 
 from fastapi.middleware.cors import CORSMiddleware
+from settings import settings
 
-allow_origins = ["http://localhost:4000", "http://127.0.0.1:4000"]
+allow_origins = ["http://localhost:4000", "http://127.0.0.1:4000", settings.client_url]
 
 
 app = FastAPI(
