@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "QueryFast",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

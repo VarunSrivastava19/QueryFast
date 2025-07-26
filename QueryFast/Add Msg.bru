@@ -1,0 +1,15 @@
+meta {
+  name: Add Msg
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/messages/:msg_name/
+  body: none
+  auth: none
+}
+
+params:path {
+  msg_name: Cheese Is Here
+}
