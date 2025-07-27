@@ -14,6 +14,16 @@
       "autoStartBrowser": false
     },
     {
+      "name": "DEV|Python Debugger: FastAPI",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["api.main:app", "--reload", "--port=5000"],
+      "cwd": "${workspaceFolder}/api",
+      "jinja": false,
+      "autoStartBrowser": false
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "Start React App",
