@@ -27,14 +27,29 @@
 
 4. **Create Database Tables**
     ```python
-    SQLModel.metadata.create_all(engine)
+    # main.py
+    def create_db_and_tables():
+        """Wrap db creation to disable import based execution for the same."""
+        SQLModel.metadata.create_all(engine)
+        logger.info("Database and tables created successfully.")
+    ```
+
+5. **Add the create_db_and_tables to Lifespan**
+    ```python
+    # main.py
+    @asynccontextmanager
+    async def lifespan(app: FastAPI):
+        create_db_and_tables()
+        yield
+        logger.info("Application shutdown complete.")
     ```
 
 5. **Integrate with FastAPI**
     ```python
+    # main.py
     from fastapi import FastAPI
 
-    app = FastAPI()
+    app = FastAPI(lifespan=lifespan)
     ```
 
 6. **Create Dependency for Database Session**

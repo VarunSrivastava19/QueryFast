@@ -1,5 +1,5 @@
 [project]
-name = "FastAPI-app"
+name = "QueryFast"
 version = "0.1.0"
 description = "A simple FastAPI application."
 
