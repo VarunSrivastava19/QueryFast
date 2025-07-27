@@ -5,20 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python Debugger: FastAPI",
-      "type": "debugpy",
-      "request": "launch",
-      "module": "uvicorn",
-      "args": ["main:app", "--reload", "--port=5000"],
-      "jinja": false,
-      "autoStartBrowser": false
-    },
-    {
       "name": "DEV|Python Debugger: FastAPI",
       "type": "debugpy",
       "request": "launch",
       "module": "uvicorn",
-      "args": ["api.main:app", "--reload", "--port=5000"],
+      "args": ["main:app", "--reload", "--port=5000"],
       "cwd": "${workspaceFolder}/api",
       "jinja": false,
       "autoStartBrowser": false
