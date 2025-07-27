@@ -49,10 +49,11 @@ jobs:
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: "fast-reactive"
+          app-name: ${{ secrets.AZURE_API_WEBAPP_NAME }}
           slot-name: "Production"
 
   build-and-deploy-client:
+    name: Build and Deploy React Client
     runs-on: ubuntu-latest
     needs: auth-with-azure
 
