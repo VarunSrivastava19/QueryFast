@@ -3,5 +3,5 @@ from fastapi import APIRouter
 router = APIRouter()
 
 @router.get("/")
-def root() -> dict[str, str]:
-    return {"message": "Hello"}
+async def root() -> dict[str, str]:
+    return {"message": "QueryFast is up and running!"}

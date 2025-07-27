@@ -1,8 +1,11 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    
     client_url: str = ""
     sqlite_file: str = ""
-    sqlite_url: str = f"sqlite:///{sqlite_file}"
+
+    model_config = SettingsConfigDict(env_file=".env", extra="allow")
+
 
 settings = Settings()
