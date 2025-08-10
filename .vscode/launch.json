@@ -20,6 +20,7 @@
       "preLaunchTask": "Start React App",
       "name": "React Debug",
       "url": "http://localhost:4000",
+      "cwd":"${workspaceFolder}/client",
       "webRoot": "${workspaceFolder}/client",
       "sourceMapPathOverrides": {
         "webpack:///./*": "${webRoot}/*"
