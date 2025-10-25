@@ -28,6 +28,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: "Build and push image"
         uses: azure/docker-login@v1
         with:
@@ -59,6 +64,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: "Build and push image"
         uses: azure/docker-login@v1
         with:
@@ -68,6 +78,11 @@ jobs:
       - run: |
           docker build -f api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }} ./api
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
