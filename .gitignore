@@ -1,18 +1,17 @@
-# Environments
 .env
-.env.*
 *.env
+.env.*
 *.env.*
-.venv
 env/
+env/*
+environment/
+environment/*
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Byte-compiled / optimized / DLL files
+node_modules/
 __pycache__/
-
-.pytest_cache/
-
-db.sqlite
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log

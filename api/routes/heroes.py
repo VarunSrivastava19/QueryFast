@@ -1,5 +1,4 @@
 import logging
-import stat
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from db.models.hero import CreateHero, Hero, HeroBase
