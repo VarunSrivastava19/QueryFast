@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f /client/dockerfile.front -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }}
+          docker build -f client/dockerfile.front -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }} ./client
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }}
 
       - name: "Deploy to Azure Container Instances"
@@ -66,7 +66,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build -f /api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
+          docker build -f api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }} ./api
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
 
       - name: "Deploy to Azure Container Instances"
