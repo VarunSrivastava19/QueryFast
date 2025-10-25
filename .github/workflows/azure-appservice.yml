@@ -19,41 +19,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-
-  build-and-deploy-fastapi:
-    name: Build and Deploy FastAPI Application
-    runs-on: ubuntu-latest
-    needs: auth-with-azure
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-        working-directory: ./api
-
-      - name: Build the application
-        run: |
-          echo "Building the application..."
-        working-directory: ./api
-
-      - name: "Deploy to Azure Web App"
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: ${{ secrets.AZURE_API_WEBAPP_NAME }}
-          slot-name: "Production"
-
-  build-and-deploy-client:
-    name: Build and Deploy React Client
+  build-and-deploy-react-image:
+    name: Build and Deploy React Image
     runs-on: ubuntu-latest
     needs: auth-with-azure
 
@@ -61,26 +28,55 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: "Build and push image"
+        uses: azure/docker-login@v1
         with:
-          node-version: "20"
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build /client/dockerfile.front -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
 
-      - name: Install dependencies
-        run: npm ci
-        working-directory: ./client
-
-      - name: Write secrets to .env file
-        run: |
-          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
-        working-directory: ./client
-
-      - name: Build project
-        run: npm run build
-        working-directory: ./client
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
+      - name: "Deploy to Azure Container Instances"
+        uses: "azure/aci-deploy@v1"
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-          package: ./client/build
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: aci-queryClient
+          location: "centralindia"
+
+  build-and-deploy-fastapi-image:
+    name: Build and Deploy FastAPI Image
+    runs-on: ubuntu-latest
+    needs: auth-with-azure
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: "Build and push image"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build /api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
+
+      - name: "Deploy to Azure Container Instances"
+        uses: "azure/aci-deploy@v1"
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: fastapi${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: aci-queryFastAPI
+          location: "centralindia"

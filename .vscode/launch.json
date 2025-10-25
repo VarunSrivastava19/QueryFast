@@ -15,7 +15,7 @@
       "autoStartBrowser": false
     },
     {
-      "type": "chrome",
+      "type": "edge",
       "request": "launch",
       "preLaunchTask": "Start React App",
       "name": "React Debug",

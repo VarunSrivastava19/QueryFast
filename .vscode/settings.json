@@ -5,6 +5,5 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.analysis.autoImportCompletions": true,
-    "python.defaultInterpreterPath": "/home/cheese/.pyenv/versions/fastAPI/bin/python",
-    "python.envFile": "${workspaceFolder}/.env"
+    "python.envFile": "${workspaceFolder}/.env",
 }

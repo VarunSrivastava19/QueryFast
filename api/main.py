@@ -5,6 +5,7 @@ from sqlmodel import SQLModel
 from routes.about import router as about_router
 from routes.messages import router as messages_router
 from routes.heroes import router as heroes_router
+from routes.csv import router as csv_router
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -71,6 +72,7 @@ async def ping():
 
 app.include_router(about_router)
 app.include_router(messages_router)
+app.include_router(csv_router, prefix="/api")
 app.include_router(
     heroes_router,
     tags=["heroes"],
