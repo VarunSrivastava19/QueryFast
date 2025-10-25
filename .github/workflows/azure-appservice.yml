@@ -35,19 +35,19 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build /client/dockerfile.front -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
+          docker build /client/dockerfile.front -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }}
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryClient:${{ github.sha }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryclient:${{ github.sha }}
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: aci-queryClient
+          name: aci-queryclient
           location: "centralindia"
 
   build-and-deploy-fastapi-image:
@@ -66,17 +66,17 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
-          docker build /api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
+          docker build /api/dockerfile.back -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
 
       - name: "Deploy to Azure Container Instances"
         uses: "azure/aci-deploy@v1"
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: fastapi${{ github.run_number }}
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryFastAPI:${{ github.sha }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/queryfastapi:${{ github.sha }}
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: aci-queryFastAPI
+          name: aci-queryfastapi
           location: "centralindia"
